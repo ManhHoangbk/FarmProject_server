@@ -47,35 +47,35 @@ router.get("/createDB",function(req,res,next){
 });
 
 router.get("/fakedata", function(req, res, next){
-    // var userObj = {
-    //     account : "admin",
-    //     email : "admin@gmail.com",
-    //     roleType : 0,
-    //     password : "admin",
-    // }
-    // UserInfo.insert(userObj, function(err, result){
-    //     if (err) throw err;
-    //     console.log("1 record inserted userObj");
-    // });
+    var userObj = {
+        account : "admin",
+        email : "admin@gmail.com",
+        roleType : 0,
+        password : "admin",
+    }
+    UserInfo.insert(userObj, function(err, result){
+        if (err) throw err;
+        console.log("1 record inserted userObj");
+    });
 
-    // var deviceobj = {
-    //     id : 1,
-    //     name : "Board01"
-    // }
-    // DeviceInfo.insert(deviceobj, function(err, result){
-    //     if (err) throw err;
-    //     console.log("1 record inserted deviceobj");
-    // });
+    var deviceobj = {
+        id : 1,
+        name : "Board01"
+    }
+    DeviceInfo.insert(deviceobj, function(err, result){
+        if (err) throw err;
+        console.log("1 record inserted deviceobj");
+    });
 
-    // var farmObj = {
-    //     id : 1,
-    //     name : "Nông trại 0001"
-    // }
+    var farmObj = {
+        id : 1,
+        name : "Nông trại 0001"
+    }
 
-    // FarmInfo.insert(farmObj, function(err, result){
-    //     if (err) throw err;
-    //     console.log("1 record inserted farmObj");
-    // })
+    FarmInfo.insert(farmObj, function(err, result){
+        if (err) throw err;
+        console.log("1 record inserted farmObj");
+    })
 
     var senserObj = {
         senser_id : 1,
