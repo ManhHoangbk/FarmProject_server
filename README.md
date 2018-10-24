@@ -1,3 +1,5 @@
+Khi mới clone hoặc dowload project về thì chạy lệnh: npm install để cài thư viên
+
 Chạy mysql ở local
 
 Setup user, pass ở file DBConnction.js
