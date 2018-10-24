@@ -4,6 +4,7 @@ var UserInfo = require('../models/UserInfo');
 
 router.get("/get-all-users",function(req,res,next){
     UserInfo.getAllUserInfos(function(err, rows){
+        console.log('err: ', err, ' rows: ', rows)
         if(err){
             res.json(err);
         } else{
