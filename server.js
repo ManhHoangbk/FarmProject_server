@@ -14,6 +14,15 @@ var server = app.listen(3001, function() {
   });
   module.exports = app;
 
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", '*');
+    res.header('Access-Control-Allow-Credentials', 'true')
+    res.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS");
+
+    next();
+});
+
 app.use(senserRouter);
 app.use(userRouter);
 app.use(deviceRouter);
