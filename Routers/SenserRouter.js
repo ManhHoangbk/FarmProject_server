@@ -24,10 +24,12 @@ router.get("/get-senser-by-id/:id?",function(req,res,next){
     });
 });
 
-router.get("/get-senser-by-createdate/:createdate?", function(req, res, next){
-    var createdate = req.params.createdate;
-    console.log('createdate ', createdate)
-    SenserInfo.getSenserDataByCreateDate(createdate, function(err, rows){
+router.get("/get-senser-by-createdate/:page?", function(req, res, next){
+    var page = req.params.page;
+    if(page < 0){
+        page = 0;
+    }
+    SenserInfo.getSenserDataByCreateDate(page, function(err, rows){
         if(err){
             res.json(err);
         } else{
