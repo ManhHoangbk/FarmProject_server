@@ -24,6 +24,18 @@ router.get("/get-senser-by-id/:id?",function(req,res,next){
     });
 });
 
+router.get("/get-senser-by-createdate/:createdate?", function(req, res, next){
+    var createdate = req.params.createdate;
+    console.log('createdate ', createdate)
+    SenserInfo.getSenserDataByCreateDate(createdate, function(err, rows){
+        if(err){
+            res.json(err);
+        } else{
+            res.json(rows);
+        }
+    });
+});
+
 router.post('/updateSenser',function(req,res,next){
     var obj = req.body;
     if(obj.id){

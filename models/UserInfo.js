@@ -12,7 +12,8 @@ var UserInfo = {
         + "email VARCHAR(60) ,"
         + "roleType INT(15) ,"
         + "password VARCHAR(60) NOT NULL," 
-        + "PRIMARY KEY(account))";
+		+ "PRIMARY KEY(account))";
+		
 	},
 	
 	createDB:function(callback){
@@ -22,7 +23,7 @@ var UserInfo = {
     getAllUserInfos:function(callback){
 		return db.query("Select * from " + this.getDBName(),callback);
 	},
-	getDeviceInfoById:function(id,callback){
+	getUserInfoById:function(id,callback){
 		return db.query("select * from "+ this.getDBName() +" where account='"+id+"'",callback);
 	},
 	insert:function(device, callback){

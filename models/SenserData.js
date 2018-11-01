@@ -20,6 +20,17 @@ var SenserData = {
     getAllDeviceInfos:function(callback){
 		return db.query("Select * from " + this.getDBName(),callback);
 	},
+
+	getSenserDataByCreateDate:function(createDate, callback){
+		var query = "Select * from " + this.getDBName();
+		if(createDate > -1){
+			query += " where createDate < " + createDate;
+		}
+		query += " order by createDate DESC limit " + 20;
+		console.log('query ', query)
+		return db.query(query ,callback);
+	},
+
 	getDeviceInfoById:function(id,callback){
 		return db.query("select * from "+ this.getDBName() +" where Id="+id,callback);
 	},

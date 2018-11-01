@@ -44,7 +44,29 @@ router.post('/updateUser',function(req,res,next){
             }
         })
     }
-    
+});
+
+router.post('/login', function(req, res, next){
+    var user = req.body;
+    console.log("user: ", user)
+    UserInfo.getUserInfoById(user.account, function(err, result){
+        console.log("err: ", err, "user: ", result)
+        if(err){
+            res.json(err)
+        } else{
+            if(result != null && result != "undefined" && result.account === user.account){
+				if(result.password === user.password){
+					user = result;
+					user.loginCode = 0//success
+				} else{
+					user.loginCode = 1;//passwordError
+				}
+			} else{
+				user.loginCode = 2//notFoundUser
+            }
+            res.json(user)
+        }
+    })
 });
 
 router.delete('/:id',function(req,res,next){
