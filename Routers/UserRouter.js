@@ -54,6 +54,7 @@ router.post('/login', function(req, res, next){
         if(err){
             res.json(err)
         } else{
+            result = result[0];
             if(result != null && result != "undefined" && result.account === user.account){
 				if(result.password === user.password){
 					user = result;
