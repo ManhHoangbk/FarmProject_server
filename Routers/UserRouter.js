@@ -4,7 +4,7 @@ var UserInfo = require('../models/UserInfo');
 
 router.get("/get-all-users",function(req,res,next){
     UserInfo.getAllUserInfos(function(err, rows){
-        console.log('err: ', err, ' rows: ', rows)
+        //console.log('err: ', err, ' rows: ', rows)
         if(err){
             res.json(err);
         } else{
@@ -27,23 +27,35 @@ router.get("/get-user-by-id/:id?",function(req,res,next){
 
 router.post('/updateUser',function(req,res,next){
     var obj = req.body;
-    if(obj.id){
-        UserInfo.update(obj,function(err,count){
-            if(err){
-                res.json(err);
+    console.log('obj ', obj)
+    UserInfo.getUserInfoById(obj.account, function(err, result){
+        if(err){
+            res.json(err)
+        } else{
+            result = result[0];
+            if(result !== undefined &&  result.account === obj.account){
+                console.log('on update')
+                UserInfo.update(obj, function(err, result2){
+                   if(err){
+                        res.json(err)
+                   } else{
+                        res.json(obj)
+                   }
+                })
             } else{
-                res.json(req.body);
+                console.log('on insert')
+                UserInfo.insert(obj, function(err, result2){
+                    if(err){
+                        res.json(err)
+                    } else{
+                        res.json(obj)
+                    }
+                    
+                })
             }
-        });
-    } else{
-        UserInfo.insert(obj, function(err, res, next){
-            if(err){
-                res.json(err);
-            } else{
-                res.json(req.body);
-            }
-        })
-    }
+        }
+    })
+    
 });
 
 router.post('/login', function(req, res, next){

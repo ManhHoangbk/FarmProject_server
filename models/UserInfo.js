@@ -32,8 +32,9 @@ var UserInfo = {
 	delete:function(id,callback){
 		return db.query("delete from "+ this.getDBName() +" where Id=?",[id],callback);
 	},
-	update:function(device,callback){
-		return db.query("update "+ this.getDBName() +" set name=? where Id="+device.id,this.getValueSQL(device),callback);
+	update:function(user,callback){
+		//console.log(" set password='"+ user.password +"', email='"+ user.email+"', roleType='"+ user.roleType)
+		return db.query("update "+ this.getDBName() +" set password='"+ user.password +"', email='"+ user.email+"', roleType='"+ user.roleType+"'  where account='"+user.account+"'",callback);
     },
     
     getColumSQL:function(){
