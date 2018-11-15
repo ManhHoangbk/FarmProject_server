@@ -37,11 +37,9 @@ var options = {
 var client = mqtt.connect('mqtt://iot.eclipse.org', options);
 client.on('connect', function() { // When connected
     console.log('connected');
-    // subscribe to a topic
     client.subscribe('/test/qos0', function() {
-        // when a message arrives, do something with it
         client.on('message', function(topic, message, packet) {
-            console.log("Received '" + message + "' on '" + topic + "'");
+            
         });
     });
 

@@ -17,6 +17,30 @@ var SenserData = {
 		return db.query(this.createTable(),callback);
 	},
 
+	saveMultiSenser:function(obj, callback){
+		var sensors_data = obj.sensors_data;
+        if(sensors_data && sensors_data.length > 0){
+            var datas = '';
+            var i = 0;
+            sensors_data.forEach(data => {
+                data.farm_id = obj.farm_id
+                data.device_id = obj.device_id
+                data.node_id = obj.node_id
+                data.createDate = obj.timestamp;
+                datas += "("+ this.getValueSQL(data)+")";
+                if(i !== sensors_data.length - 1){
+                    datas += ",";
+                }
+                i++;
+			});
+			//console.log("Insert into "+ this.getDBName() +"("+ this.getColumSQL() +") values " + datas)
+			return db.query("Insert into "+ this.getDBName() +"("+ this.getColumSQL() +") values " + datas ,callback);
+        } else{
+			console.log('error: ', sensors_data)
+		}
+		
+	},
+
     getAllDeviceInfos:function(callback){
 		return db.query("Select * from " + this.getDBName(),callback);
 	},
@@ -31,6 +55,7 @@ var SenserData = {
 	getDeviceInfoById:function(id,callback){
 		return db.query("select * from "+ this.getDBName() +" where Id="+id,callback);
 	},
+
 	insert:function(senser, callback){
 		return db.query("Insert into "+ this.getDBName() +"("+ this.getColumSQL() +") values ( " + this.getValueSQL(senser) + " ) ",callback);
 	},
@@ -42,12 +67,12 @@ var SenserData = {
     },
     
     getColumSQL:function(){
-        return "id,sensor_id,sensor_name,sensor_value,device_id,farm_id,createDate";
+        return "sensor_id,sensor_name,sensor_value,device_id,farm_id,createDate";
     },
 
     getValueSQL:function(senser){
 	   // return [device.name];
-	   return "'"+ senser.id+"','"+ senser.sensor_id+"','"+ senser.sensor_name + "','"+ senser.sensor_value + "','"+ senser.device_id + "','"+ senser.farm_id + "','"+ senser.createDate +"'"
+	   return "'"+ senser.sensor_id+"','"+ senser.sensor_name + "','"+ senser.sensor_value + "','"+ senser.device_id + "','"+ senser.farm_id + "','"+ senser.createDate +"'"
     }
 
 };

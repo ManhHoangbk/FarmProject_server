@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var SenserInfo = require('../models/SenserData');
 
+
 router.get("/get-all-senser",function(req,res,next){
     SenserInfo.getAllDeviceInfos(function(err, rows){
         if(err){
@@ -10,6 +11,26 @@ router.get("/get-all-senser",function(req,res,next){
             res.json(rows);
         }
     });
+});
+
+router.post("/saveSensers", function(req, res, next){
+    var obj = req.body;
+    console.log("obj ", obj)
+    if(obj){
+        SenserInfo.saveMultiSenser(obj, function(err, rows){
+            if(err){
+                res.json(err);
+            } else{
+                res.json(rows);
+            }
+        });
+    } else{
+        console.log('error')
+    }
+   
+
+   
+
 });
 
 //http://localhost:3000/get-device-by-id/1
