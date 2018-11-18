@@ -5,7 +5,7 @@ var DeviceInfo = require('../models/DeviceInfo');
 var FarmInfo = require('../models/FarmInfo');
 var SenserData = require('../models/SenserData');
 var UserInfo = require('../models/UserInfo');
-
+var DeviceAuthentication = require('../models/DeviceAuthentication');
 
 router.get("/createDB",function(req,res,next){
     var dbName = "FarmProject";
@@ -36,6 +36,11 @@ router.get("/createDB",function(req,res,next){
             UserInfo.createDB(function(err, rows){
                 if(err){
                     console.log('error: ', err)
+                } 
+            });
+            DeviceAuthentication.createDB(function(err, rows){
+                if(err){
+                    console.log('DeviceAuthentication error: ', err)
                 } 
             });
             res.json("done");

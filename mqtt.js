@@ -1,26 +1,6 @@
-// var mqtt = require('mqtt')
-// var client  = mqtt.connect('mqtt://test.mosquitto.org')
- 
-// client.on('connect', function () {
-//   client.subscribe('presence', function (err) {
-//     if (!err) {
-//         setInterval(function(){
-//             client.publish('presence', 'Hello mqtt ', new Date().getTime())
-//         }, 2000)
-      
-//     }
-//   })
-// })
- 
-// client.on('message', function (topic, message) {
-//   // message is Buffer
-//   console.log(message.toString())
-//   //client.end()
-// })
-
-// module.exports=client;
-
 var mqtt = require('mqtt');
+var DeviceAuthentication = require('./models/DeviceAuthentication');
+var SenserData = require('./models/SenserData');
 var options = {
     port: 1883,
     host: 'mqtt://iot.eclipse.org',
@@ -34,20 +14,86 @@ var options = {
     clean: true,
     encoding: 'utf8'
 };
-var client = mqtt.connect('mqtt://iot.eclipse.org', options);
-client.on('connect', function() { // When connected
-    console.log('connected');
-    client.subscribe('/test/qos0', function() {
-        client.on('message', function(topic, message, packet) {
-            
-        });
-    });
+var client;
+const TOPIC_LISTEN_AUTHENCATICAION = "nct_authentication";
+const TOPIC_PUBLISH_AUTHENCATICAION = "nct_authentication_result_";
+const TOPIC_BROKER = "nct_broker";
 
-    // publish a message to a topic
-    //   client.publish('test/qos0', 'Chào Kiệt', function() {
-    //     console.log("Message is published");
-       
-    // });
-   // client.end(); // Close the connection when published
-   
-});
+var MQTT = {
+    
+    initMQTT: function(){
+        client = mqtt.connect('mqtt://iot.eclipse.org', options);
+    },
+
+    onSubcribeCollect: function(){
+        if(!client){
+            this.initMQTT();
+        }
+        client.on('connect', function() { // When connected
+            console.log('onSubcribeCollect3 ');
+            client.subscribe('/' + TOPIC_BROKER, function() {
+                client.on('message', function(topic, message, packet) {
+                    if(message){
+                        // if(typeof message !== 'object'){
+                        //     message = JSON.stringify(message);
+                        // }
+                        var key_device = message.key_device;
+                        DeviceAuthentication.getDeviceAuthenticationByKey(key_device, function(err, row){
+                            if(err){
+                            } else{
+                                console.log('DeviceAuthentication okiii')
+                                // SenserData.saveMultiSenser(message, function(err, row){
+                                // })
+                            }
+                        })
+                    }
+                });
+            });
+        });
+    },
+
+    onSubcribeAuthentication: function(){
+        if(!client){
+            this.initMQTT();
+        }
+        client.on('connect', function() { // When connected
+            client.subscribe('/'+TOPIC_LISTEN_AUTHENCATICAION, function() {
+                client.on('message', function(topic, message, packet) {
+                    console.log("onSubcribeAuthentication message: ", message)
+                    message = JSON.parse(message.toString());
+                    DeviceAuthentication.getDeviceAuthentication(message, function(err, result){
+                        if(err){
+                            message.key_device = -1;
+                        } else{
+                            result = result[0];
+                            message.key_device = result.key_device;
+                        }
+                        console.log('message ', message)
+                        client.publish('/'+ TOPIC_PUBLISH_AUTHENCATICAION+message.id, JSON.stringify(message), function() {
+                            console.log("Message is published ", TOPIC_PUBLISH_AUTHENCATICAION);
+                        });
+                    });
+                });
+            });
+        });
+    },
+
+    onPublish: function(topic, message){
+        if(!client){
+            this.initMQTT();
+        }
+        //publish a message to a topic
+        client.publish('/'+ topic, message, function() {
+            console.log("Message is published");
+        });
+    },
+
+    onCloseConnect: function(){
+        if(client){
+            client.end();
+        }
+    }
+}
+
+module.exports = MQTT;
+
