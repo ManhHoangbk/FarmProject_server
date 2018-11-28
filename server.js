@@ -6,20 +6,13 @@ var userRouter = require('./Routers/UserRouter');
 var senserRouter = require('./Routers/SenserRouter')
 var createDB = require('./Routers/CreateDB');
 var deviceAuthenticationRouter = require('./Routers/DeviceAuthenticationRouter');
-//var mqtt = require('./mqtt');
+var mqtt = require('./mqtt');
 app.use(bodyparser.urlencoded({extended: true}));
 app.use(bodyparser.json());
 
 var server = app.listen(process.env.PORT || 3001, function() {
-//   var json = {
-//     id: 1,
-//     password: '2',
-//   }
-//  // mqtt.onSubcribeCollect();
-//   mqtt.onSubcribeAuthentication();
-//   setTimeout(function(){
-//     mqtt.onPublish('nct_authentication', JSON.stringify(json))
-//   }, 3000);
+    mqtt.onSubcribeCollect();
+    mqtt.onSubcribeAuthentication();
   console.log('Server listening on port ' + server.address().port);
   });
   module.exports = app;

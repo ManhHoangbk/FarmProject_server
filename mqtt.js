@@ -17,7 +17,7 @@ var options = {
 var client;
 const TOPIC_LISTEN_AUTHENCATICAION = "nct_authentication";
 const TOPIC_PUBLISH_AUTHENCATICAION = "nct_authentication_result_";
-const TOPIC_BROKER = "nct_broker";
+const TOPIC_BROKER = "nct_collect_";
 
 var MQTT = {
     
@@ -30,23 +30,19 @@ var MQTT = {
             this.initMQTT();
         }
         client.on('connect', function() { // When connected
-            console.log('onSubcribeCollect3 ');
-            client.subscribe('/' + TOPIC_BROKER, function() {
+            client.subscribe(TOPIC_BROKER, function() {
                 client.on('message', function(topic, message, packet) {
-                    if(message){
-                        // if(typeof message !== 'object'){
-                        //     message = JSON.stringify(message);
-                        // }
+                    message = JSON.parse(message.toString());
                         var key_device = message.key_device;
+                        console.log('onSubcribeCollect ', message)
                         DeviceAuthentication.getDeviceAuthenticationByKey(key_device, function(err, row){
                             if(err){
                             } else{
-                                console.log('DeviceAuthentication okiii')
+                                console.log('DeviceAuthentication okiii ', row)
                                 // SenserData.saveMultiSenser(message, function(err, row){
                                 // })
                             }
                         })
-                    }
                 });
             });
         });
@@ -57,20 +53,28 @@ var MQTT = {
             this.initMQTT();
         }
         client.on('connect', function() { // When connected
-            client.subscribe('/'+TOPIC_LISTEN_AUTHENCATICAION, function() {
+            client.subscribe(TOPIC_LISTEN_AUTHENCATICAION, function() {
                 client.on('message', function(topic, message, packet) {
-                    console.log("onSubcribeAuthentication message: ", message)
                     message = JSON.parse(message.toString());
                     DeviceAuthentication.getDeviceAuthentication(message, function(err, result){
+                        var objReturn ={ 
+                            result: 'PASS', 
+                            cycle: 0.5,
+                            key: 0
+                        } 
                         if(err){
-                            message.key_device = -1;
+                            objReturn.key = -2;
                         } else{
                             result = result[0];
-                            message.key_device = result.key_device;
+                            if(result){
+                                objReturn.key = result.key_device;
+                            } else{
+                                objReturn.key = -1;
+                            }
                         }
-                        console.log('message ', message)
-                        client.publish('/'+ TOPIC_PUBLISH_AUTHENCATICAION+message.id, JSON.stringify(message), function() {
-                            console.log("Message is published ", TOPIC_PUBLISH_AUTHENCATICAION);
+                        console.log('message ', objReturn)
+                        client.publish(TOPIC_PUBLISH_AUTHENCATICAION+message.id, JSON.stringify(objReturn), function() {
+                            console.log("Message is published ");
                         });
                     });
                 });

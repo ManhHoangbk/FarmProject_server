@@ -36,7 +36,7 @@ var SenserData = {
 			//console.log("Insert into "+ this.getDBName() +"("+ this.getColumSQL() +") values " + datas)
 			return db.query("Insert into "+ this.getDBName() +"("+ this.getColumSQL() +") values " + datas ,callback);
         } else{
-			console.log('error: ', sensors_data)
+			//console.log('error: ', sensors_data)
 		}
 		
 	},
