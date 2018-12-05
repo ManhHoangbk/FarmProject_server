@@ -21,12 +21,16 @@ var SenserData = {
 		var sensors_data = obj.sensors_data;
         if(sensors_data && sensors_data.length > 0){
             var datas = '';
-            var i = 0;
+			var i = 0;
+			var timeLong = new Date().getTime();
+			if(obj.timestamp ){
+				timeLong = new Date(obj.timestamp).getTime();
+			}
             sensors_data.forEach(data => {
                 data.farm_id = obj.farm_id
                 data.device_id = obj.device_id
                 data.node_id = obj.node_id
-                data.createDate = obj.timestamp;
+                data.createDate = timeLong;
                 datas += "("+ this.getValueSQL(data)+")";
                 if(i !== sensors_data.length - 1){
                     datas += ",";
@@ -36,7 +40,7 @@ var SenserData = {
 			//console.log("Insert into "+ this.getDBName() +"("+ this.getColumSQL() +") values " + datas)
 			return db.query("Insert into "+ this.getDBName() +"("+ this.getColumSQL() +") values " + datas ,callback);
         } else{
-			//console.log('error: ', sensors_data)
+			console.log('error: ', sensors_data)
 		}
 		
 	},

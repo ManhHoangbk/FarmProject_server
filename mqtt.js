@@ -22,7 +22,8 @@ const TOPIC_BROKER = "nct_collect_12";
 var MQTT = {
 
     initMQTT: function(){
-        client = mqtt.connect('mqtt://iot.eclipse.org', options);
+        // client = mqtt.connect('mqtt://iot.eclipse.org', options);
+        client  = mqtt.connect('mqtt://test.mosquitto.org')
         client.on('message', (topic, message, packet)  => {
             console.log('topic ', topic)
             if(!topic){
@@ -60,16 +61,21 @@ var MQTT = {
     },
 
     onHanderCollect: function(message){
-        var key_device = message.key_device;
+        //var key_device = message.key_device;
         console.log('onSubcribeCollect ', message)
-        DeviceAuthentication.getDeviceAuthenticationByKey(key_device, function(err, row){
-           if(err){
+        SenserData.saveMultiSenser(message, function(err, row){
+            if(err){
+                console.log('err ', err )
             } else{
-               console.log('DeviceAuthentication okiii ', row)
-                SenserData.saveMultiSenser(message, function(err, row){
-                })
+                console.log('onSubcribeCollect okiiii' )
             }
         })
+        // DeviceAuthentication.getDeviceAuthenticationByKey(key_device, function(err, row){
+        //    if(err){
+        //     } else{
+        //        console.log('DeviceAuthentication okiii ', row)
+        //     }
+        // })
     },
 
     onHanderAuthentication: function(message){
