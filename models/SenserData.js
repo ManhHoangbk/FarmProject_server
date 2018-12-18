@@ -60,6 +60,14 @@ var SenserData = {
 		return db.query("select * from "+ this.getDBName() +" where Id="+id,callback);
 	},
 
+	getSensorByDeviceId:function(id,callback){
+		return db.query("select * from "+ this.getDBName() +" where device_id="+id,callback);
+	},
+
+	getSensorByFarmId:function(id,callback){
+		return db.query("select * from "+ this.getDBName() +" where farm_id="+id,callback);
+	},
+
 	insert:function(senser, callback){
 		return db.query("Insert into "+ this.getDBName() +"("+ this.getColumSQL() +") values ( " + this.getValueSQL(senser) + " ) ",callback);
 	},

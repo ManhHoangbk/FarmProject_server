@@ -27,16 +27,36 @@ router.post("/saveSensers", function(req, res, next){
     } else{
         console.log('error')
     }
-   
-
-   
-
 });
 
 //http://localhost:3000/get-device-by-id/1
 router.get("/get-senser-by-id/:id?",function(req,res,next){
     var id = req.params.id;
     SenserInfo.getDeviceInfoById(id, function(err, rows){
+        if(err){
+            res.json(err);
+        } else{
+            res.json(rows);
+        }
+    });
+});
+
+//http://localhost:3000/get-senser-by-device-id/1
+router.get("/get-senser-by-device-id/:id?",function(req,res,next){
+    var id = req.params.id;
+    SenserInfo.getSensorByDeviceId(id, function(err, rows){
+        if(err){
+            res.json(err);
+        } else{
+            res.json(rows);
+        }
+    });
+});
+
+//http://localhost:3000/gget-senser-by-farm-id/1
+router.get("/get-senser-by-farm-id/:id?",function(req,res,next){
+    var id = req.params.id;
+    SenserInfo.getSensorByFarmId(id, function(err, rows){
         if(err){
             res.json(err);
         } else{
