@@ -65,7 +65,7 @@ router.get("/get-senser-by-farm-id/:id?",function(req,res,next){
     });
 });
 
-router.get("/get-senser-by-createdate/:page?", function(req, res, next){
+router.get("/get-sensers/:page?", function(req, res, next){
     var page = req.params.page;
     if(page < 0){
         page = 0;
