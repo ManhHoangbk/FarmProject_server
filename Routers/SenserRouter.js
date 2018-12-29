@@ -66,6 +66,20 @@ router.get("/get-senser-by-farm-id/:id?/:page?",function(req,res,next){
     });
 });
 
+//http://localhost:3000/gget-senser-by-farm-id/1
+router.get("/get-senser-by-farm-id-and-deviceId/:farmId?/:deviceId?/:page?",function(req,res,next){
+    var farmId = req.params.farmId;
+    var deviceId = req.params.deviceId;
+    var page = req.params.page;
+    SenserInfo.getSensorByFarmAnDeviceIdId(farmId, deviceId, page, function(err, rows){
+        if(err){
+            res.json(err);
+        } else{
+            res.json(rows);
+        }
+    });
+});
+
 router.get("/get-sensers/:page?", function(req, res, next){
     var page = req.params.page;
     if(page < 0){
