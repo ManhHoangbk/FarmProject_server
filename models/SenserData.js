@@ -61,11 +61,12 @@ var SenserData = {
 	},
 
 	getSensorByDeviceId:function(id,callback){
-		return db.query("select * from "+ this.getDBName() +" where device_id="+id,callback);
+		return db.query("select * from "+ this.getDBName() +" where device_id="+id  , callback);
 	},
 
-	getSensorByFarmId:function(id,callback){
-		return db.query("select * from "+ this.getDBName() +" where farm_id="+id,callback);
+	getSensorByFarmId:function(id, page ,callback){
+		let limit = 20;
+		return db.query("select * from "+ this.getDBName() +" where farm_id="+id + " order by createDate DESC limit " + limit + " offset "+ page* limit,callback);
 	},
 
 	insert:function(senser, callback){

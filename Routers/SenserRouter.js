@@ -54,9 +54,10 @@ router.get("/get-senser-by-device-id/:id?",function(req,res,next){
 });
 
 //http://localhost:3000/gget-senser-by-farm-id/1
-router.get("/get-senser-by-farm-id/:id?",function(req,res,next){
+router.get("/get-senser-by-farm-id/:id?/:page?",function(req,res,next){
     var id = req.params.id;
-    SenserInfo.getSensorByFarmId(id, function(err, rows){
+    var page = req.params.page;
+    SenserInfo.getSensorByFarmId(id, page, function(err, rows){
         if(err){
             res.json(err);
         } else{
