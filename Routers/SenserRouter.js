@@ -3,8 +3,9 @@ var router = express.Router();
 var SenserInfo = require('../models/SenserData');
 
 
-router.get("/get-all-senser",function(req,res,next){
-    SenserInfo.getAllDeviceInfos(function(err, rows){
+router.get("/get-all-senser/:page?",function(req,res,next){
+    var page = req.params.page;
+    SenserInfo.getAllDeviceInfos(page, function(err, rows){
         if(err){
             res.json(err);
         } else{

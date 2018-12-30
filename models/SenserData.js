@@ -45,8 +45,9 @@ var SenserData = {
 		
 	},
 
-    getAllDeviceInfos:function(callback){
-		return db.query("Select * from " + this.getDBName(),callback);
+    getAllDeviceInfos:function(page, callback){
+		let limit = 20;
+		return db.query("Select * from " + this.getDBName() +" order by createDate DESC limit " + limit + " offset "+ page* limit,callback);
 	},
 
 	getSenserDataByCreateDate:function(page, callback){
