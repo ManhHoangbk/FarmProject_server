@@ -60,8 +60,9 @@ var SenserData = {
 		return db.query("select * from "+ this.getDBName() +" where Id="+id,callback);
 	},
 
-	getSensorByDeviceId:function(id,callback){
-		return db.query("select * from "+ this.getDBName() +" where device_id="+id  , callback);
+	getSensorByDeviceId:function(id, page,callback){
+		let limit = 20;
+		return db.query("select * from "+ this.getDBName() +" where device_id="+id  + " order by createDate DESC limit " + limit + " offset "+ page* limit, callback);
 	},
 
 	getSensorByFarmId:function(id, page ,callback){
