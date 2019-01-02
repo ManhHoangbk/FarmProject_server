@@ -14,21 +14,21 @@ router.get("/get-all-senser/:page?",function(req,res,next){
     });
 });
 
-router.post("/saveSensers", function(req, res, next){
-    var obj = req.body;
-    console.log("obj ", obj)
-    if(obj){
-        SenserInfo.saveMultiSenser(obj, function(err, rows){
-            if(err){
-                res.json(err);
-            } else{
-                res.json(rows);
-            }
-        });
-    } else{
-        console.log('error')
-    }
-});
+// router.post("/saveSensers", function(req, res, next){
+//     var obj = req.body;
+//     console.log("obj ", obj)
+//     if(obj){
+//         SenserInfo.saveMultiSenser(obj, function(err, rows){
+//             if(err){
+//                 res.json(err);
+//             } else{
+//                 res.json(rows);
+//             }
+//         });
+//     } else{
+//         console.log('error')
+//     }
+// });
 
 //http://localhost:3000/get-device-by-id/1
 router.get("/get-senser-by-id/:id?",function(req,res,next){
