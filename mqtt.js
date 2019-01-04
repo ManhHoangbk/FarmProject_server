@@ -21,7 +21,7 @@ const TOPIC_BROKER = "nct_collect_12";
 
 var MQTT = {
 
-    initMQTT: function(){
+    initMQTT: function(){//khoi_tao_mqtt
         client = mqtt.connect('mqtt://iot.eclipse.org', options);
         // client  = mqtt.connect('mqtt://test.mosquitto.org')
         client.on('message', (topic, message, packet)  => {

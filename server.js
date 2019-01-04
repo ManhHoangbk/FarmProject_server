@@ -10,9 +10,9 @@ var mqtt = require('./mqtt');
 app.use(bodyparser.urlencoded({extended: true}));
 app.use(bodyparser.json());
 
-var server = app.listen(process.env.PORT || 3001, function() {
+var server = app.listen(process.env.PORT || 3001, function() {//start server
     mqtt.onSubcribeCollect();
-    mqtt.onSubcribeAuthentication();
+    mqtt.onSubcribeAuthentication();//lang_nghe_xac_thuc_ket_noi
   console.log('Server listening on port ' + server.address().port);
   });
   module.exports = app;
